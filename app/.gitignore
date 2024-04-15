@@ -1,0 +1,6 @@
+/build
+/app.iml
+/google-services.json
+*.db
+/beta/release/app-beta-release.aab
+*.aab
