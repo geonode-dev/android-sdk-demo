@@ -40,6 +40,15 @@ Initialize SDK on you `Application main class`
 val repocket= Repocket.Builder().withContext(this).withApiKey("YOUR-API-KEY").build()
 ```
 
+
+### For background running
+
+If you want to use SDK in background you can pass boolean along with notification information at time of `initilization` use `withForegroundService` method default value is `true` which means if you not call this method SDK will use `foreground` service by default
+
+```groovy
+withForegroundService(true,"NotificationTitle","NotificationContent")
+```
+
 ### Step 4 Connect SDK
 You can connect SDK by just calling `connnect` function
 

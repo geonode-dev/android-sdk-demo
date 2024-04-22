@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
 
 
         val repocket =
-            Repocket.Builder().withContext(this).withApiKey("YOUR-API-KEY")
+            Repocket.Builder().withContext(this).withApiKey("YOUR-API-KEY").withForegroundService(true,"Notification Title","Notification Content")
                 .build()
         lifecycleScope.launch {
             repocket.connectionStatus.collect {
