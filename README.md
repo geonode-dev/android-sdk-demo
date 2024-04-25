@@ -32,6 +32,29 @@ dependencies {
 }
 ```
 
+if your app targeting below API 23 (Android 6.0) you need to add this in your app level `build.gradle` file
+
+```groovy
+compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+```
+add this dependency under `dependency` section
+
+```groovy
+
+coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
+
+```
+[Use Java 8 language features and APIs](https://developer.android.com/studio/write/java8-support.html)
+
+
+
 ### Step 3 initialize SDK
 
 Initialize SDK on you `Application main class`
