@@ -69,7 +69,7 @@ val repocket= Repocket.Builder().withContext(this).withApiKey("YOUR-API-KEY").bu
 If you want to use SDK in background you can pass boolean along with notification information at time of `initilization` use `withForegroundService` method default value is `true` which means if you not call this method SDK will use `foreground` service by default
 
 ```groovy
-withForegroundService(true,"NotificationTitle","NotificationContent")
+withForegroundService(true,notificationId,notificationObject")
 ```
 
 ### Step 4 Connect SDK

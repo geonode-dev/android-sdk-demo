@@ -1,40 +1,47 @@
 package com.geonode.testsdk
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.app.NotificationCompat
 import androidx.lifecycle.lifecycleScope
-import com.geonode.testsdk.ui.theme.TestSdkTheme
 import com.repocket.androidsdk.Repocket
 import com.repocket.androidsdk.models.ConnectionEvent
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     private val TAG = "SDK-TEST"
+    private val channelId = "RepocketSDKChannel"
+    private val channelName = "RepocketSDKChannel"
+    private val channelDescription = "Repocket SDK needs this channel to run in background"
+    private val iconResId = R.drawable.ic_launcher_foreground
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
         val textView = findViewById<TextView>(R.id.connection_status)
 
 
+        createNotificationChannel()
+        val notification = createNotification()
+
         val repocket =
-            Repocket.Builder().withContext(this).withApiKey("YOUR-API-KEY").withForegroundService(true,"Notification Title","Notification Content")
-                .build()
+            Repocket.Builder().withApiKey("YOUR-API-KEY").withContext(this)
+                .withForegroundService(true, notificationId = 11, notification).build()
+
         lifecycleScope.launch {
             repocket.connectionStatus.collect {
                 when (it) {
                     ConnectionEvent.Connected -> {
                         textView.text = "connected"
+                        Log.d(TAG, "connected")
 
                     }
 
@@ -70,5 +77,23 @@ class MainActivity : ComponentActivity() {
             repocket.disconnect()
         }
 
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(channelId, channelName, importance).apply {
+                description = channelDescription
+            }
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun createNotification(): Notification {
+        return NotificationCompat.Builder(this, channelId).setSmallIcon(iconResId)
+            .setContentTitle("Repocket SDK").setContentText("Repocket SDK is running in background")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT).build()
     }
 }
