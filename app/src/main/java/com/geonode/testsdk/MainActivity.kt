@@ -38,32 +38,35 @@ class MainActivity : ComponentActivity() {
 
         lifecycleScope.launch {
             repocket.connectionStatus.collect {
-                when (it) {
+                when(it){
                     ConnectionEvent.Connected -> {
-                        textView.text = "connected"
-                        Log.d(TAG, "connected")
-
+                        textView.text = "Connected"
                     }
-
                     ConnectionEvent.Connecting -> {
-                        Log.d(TAG, "Connecting")
-                        textView.text = "connecting"
+                        textView.text = "Connecting"
                     }
-
                     ConnectionEvent.Disconnected -> {
-                        Log.d(TAG, "DisConnected")
-                        textView.text = "disconnect"
-
+                        textView.text = "disconnected"
                     }
-
                     is ConnectionEvent.Error -> {
-                        Log.d(TAG, it.ex.message.toString())
-
                         textView.text = "Error"
                     }
-
                     ConnectionEvent.OnRefreshTokenRequired -> {
-                        textView.text = "on Refresh Token"
+                        textView.text = "Token Error"
+                    }
+
+                    ConnectionEvent.CheckingLatestVersion -> {
+                        textView.text = "Checking update"
+                    }
+                    ConnectionEvent.ErrorOnUpdateSdk -> {
+                        textView.text = "Error on update"
+                    }
+                    ConnectionEvent.UpdateCompleted -> {
+
+                        textView.text = "Update completed"
+                    }
+                    ConnectionEvent.UpdatingSdk -> {
+                        textView.text = "Updating"
                     }
                 }
 

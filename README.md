@@ -1,9 +1,11 @@
-# Repocket Android SDK Demo
+[![](https://jitpack.io/v/org.bitbucket.consumerchoicemvp/repocket-android-client-sdk.svg)](https://jitpack.io/#org.bitbucket.consumerchoicemvp/repocket-android-client-sdk)
 
+# Repocket Android SDK Demo
 
 ## Getting Started
 
 ### Step 1: Configure dependency URL
+
 #### Add snippet below to settings.gradle file:
 
 ```groovy
@@ -12,6 +14,9 @@ dependencyResolutionManagement {
   repositories {
     google()
     mavenCentral()
+    maven {
+            url = uri("https://plugins.gradle.org/m2/")
+        }
     maven {
       url = uri("https://jitpack.io")
       credentials {
@@ -24,11 +29,11 @@ dependencyResolutionManagement {
 
 ### Step 2: Embed dependencies
 
-Add dependency in you Android project app level  `build.gradle`. 
+Add dependency in you Android project app level  `build.gradle`.
 
 ```groovy
 dependencies {
-  implementation 'org.bitbucket.consumerchoicemvp:repocket-android-sdk:LATEST-VERSION'
+  implementation 'org.bitbucket.consumerchoicemvp:repocket-android-client-sdk:LATEST-VERSION'
 }
 ```
 
@@ -44,6 +49,7 @@ compileOptions {
         jvmTarget = "1.8"
     }
 ```
+
 add this dependency under `dependency` section
 
 ```groovy
@@ -51,9 +57,8 @@ add this dependency under `dependency` section
 coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
 
 ```
+
 [Use Java 8 language features and APIs](https://developer.android.com/studio/write/java8-support.html)
-
-
 
 ### Step 3 initialize SDK
 
@@ -63,16 +68,18 @@ Initialize SDK on you `Application main class`
 val repocket= Repocket.Builder().withContext(this).withApiKey("YOUR-API-KEY").build()
 ```
 
-
 ### For background running
 
-If you want to use SDK in background you can pass boolean along with notification information at time of `initilization` use `withForegroundService` method default value is `true` which means if you not call this method SDK will use `foreground` service by default
+If you want to use SDK in background you can pass boolean along with notification information at time of `initilization`
+use `withForegroundService` method default value is `true` which means if you not call this method SDK will
+use `foreground` service by default
 
 ```groovy
 withForegroundService(true,notificationId,notificationObject")
 ```
 
 ### Step 4 Connect SDK
+
 You can connect SDK by just calling `connnect` function
 
 ```groovy
@@ -85,32 +92,39 @@ You can listen connection related events by collecting `connection flow`
 
 ```groovy
 lifecycleScope.launch {
-  repocket.connectionStatus.collect {
-    when (it) {
-      ConnectionEvent.Connected -> {
-        // connected state
-      }
+            repocket.connectionStatus.collect {
+                when(it){
+                    ConnectionEvent.Connected -> {
+                        //"Connected"
+                    }
+                    ConnectionEvent.Connecting -> {
+                        //"Connecting"
+                    }
+                    ConnectionEvent.Disconnected -> {
+                        //"disconnected"
+                    }
+                    is ConnectionEvent.Error -> {
+                        // "Error"
+                    }
+                    ConnectionEvent.OnRefreshTokenRequired -> {
+                        //"Token Error"
+                    }
+                    ConnectionEvent.CheckingLatestVersion -> {
+                        //"Checking update"
+                    }
+                    ConnectionEvent.ErrorOnUpdateSdk -> {
+                        //"Error on update"
+                    }
+                    ConnectionEvent.UpdateCompleted -> {
+                         //"Update completed"
+                    }
+                    ConnectionEvent.UpdatingSdk -> {
+                        //"Updating"
+                    }
+                }
 
-      ConnectionEvent.Connecting -> {
-        // connecting state
-      }
-
-      ConnectionEvent.Disconnected -> {
-        // disconnected state
-
-      }
-
-      is ConnectionEvent.Error -> {
-        // Error state
-      }
-
-      ConnectionEvent.OnRefreshTokenRequired -> {
-        // Refresh Token required state
-      }
-    }
-
-  }
-}
+            }
+        }
 
 ```
 
@@ -119,5 +133,7 @@ You can disconnect SDK by calling `disconnect` function
 ```groovy
 repocket.disconnect()
 ```
+
+
 
 

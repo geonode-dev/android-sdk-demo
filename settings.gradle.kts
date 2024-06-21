@@ -17,6 +17,9 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven {
+            url = uri("https://plugins.gradle.org/m2/")
+        }
+        maven {
             url = uri("https://jitpack.io")
             credentials {
                 username = "YOUR-AUTH-TOKEN"
@@ -25,6 +28,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "testSdk"
+rootProject.name = "android-sdk-demo"
 include(":app")
  
