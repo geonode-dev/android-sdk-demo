@@ -1,7 +1,5 @@
 # Repocket Android SDK Demo
 
-[![JitPack](https://jitpack.io/v/org.bitbucket.consumerchoicemvp/repocket-android-client-sdk.svg)](https://jitpack.io/#org.bitbucket.consumerchoicemvp/repocket-android-client-sdk)
-
 ## Getting Started
 
 ### Step 1: Configure dependency URL
